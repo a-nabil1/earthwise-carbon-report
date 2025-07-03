@@ -10,6 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isSignUp, setIsSignUp] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -31,9 +32,14 @@ const SignIn = () => {
               <Leaf className="h-6 w-6 text-white" />
             </div>
           </div>
-          <CardTitle className="text-2xl font-bold text-gray-900">Welcome Back</CardTitle>
+          <CardTitle className="text-2xl font-bold text-gray-900">
+            {isSignUp ? "Create Account" : "Welcome Back"}
+          </CardTitle>
           <CardDescription className="text-gray-600">
-            Sign in to your CarbonTrack account
+            {isSignUp 
+              ? "Sign up for your CarbonTrack account" 
+              : "Sign in to your CarbonTrack account"
+            }
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -66,9 +72,23 @@ const SignIn = () => {
               type="submit"
               className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
             >
-              Sign In
+              {isSignUp ? "Sign Up" : "Sign In"}
             </Button>
           </form>
+          
+          <div className="mt-6 text-center">
+            <p className="text-gray-600 text-sm mb-4">
+              {isSignUp ? "Already have an account?" : "Don't have an account?"}
+            </p>
+            <Button
+              variant="outline"
+              onClick={() => setIsSignUp(!isSignUp)}
+              className="w-full border-emerald-600 text-emerald-600 hover:bg-emerald-50"
+            >
+              {isSignUp ? "Sign In Instead" : "Create Account"}
+            </Button>
+          </div>
+          
           <div className="mt-6 text-center">
             <Link to="/" className="text-emerald-600 hover:text-emerald-700 text-sm">
               ← Back to home
