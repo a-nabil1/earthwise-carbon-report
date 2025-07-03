@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -7,28 +7,23 @@ import { Label } from "@/components/ui/label";
 import { Leaf, Upload, FileSpreadsheet, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
+import { useState } from "react";
 
 const Dashboard = () => {
-  const [userEmail, setUserEmail] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { user, loading, signOut } = useAuth();
 
   useEffect(() => {
-    const isLoggedIn = localStorage.getItem("isLoggedIn");
-    const email = localStorage.getItem("userEmail");
-    
-    if (!isLoggedIn || !email) {
+    if (!loading && !user) {
       navigate("/signin");
-      return;
     }
-    
-    setUserEmail(email);
-  }, [navigate]);
+  }, [user, loading, navigate]);
 
-  const handleSignOut = () => {
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("userEmail");
+  const handleSignOut = async () => {
+    await signOut();
     navigate("/");
   };
 
@@ -52,6 +47,23 @@ const Dashboard = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-blue-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-blue-500 rounded-xl flex items-center justify-center shadow-lg mx-auto mb-4">
+            <Leaf className="h-6 w-6 text-white" />
+          </div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return null;
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-blue-50">
       {/* Header */}
@@ -65,7 +77,7 @@ const Dashboard = () => {
               <span className="text-xl font-bold text-gray-900">CarbonTrack</span>
             </div>
             <div className="flex items-center space-x-4">
-              <span className="text-gray-700">Welcome, {userEmail}</span>
+              <span className="text-gray-700">Welcome, {user.email}</span>
               <Button
                 onClick={handleSignOut}
                 variant="outline"
