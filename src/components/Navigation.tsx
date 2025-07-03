@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Leaf } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -18,12 +19,12 @@ const Navigation = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex items-center space-x-3">
+          <Link to="/" className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-blue-500 rounded-xl flex items-center justify-center shadow-lg">
               <Leaf className="h-6 w-6 text-white" />
             </div>
             <span className="text-xl font-bold text-gray-900">CarbonTrack</span>
-          </div>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
@@ -37,8 +38,8 @@ const Navigation = () => {
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-emerald-600 group-hover:w-full transition-all duration-300"></span>
               </a>
             ))}
-            <Button variant="outline" className="border-emerald-600 text-emerald-600 hover:bg-emerald-50">
-              Sign In
+            <Button asChild variant="outline" className="border-emerald-600 text-emerald-600 hover:bg-emerald-50">
+              <Link to="/signin">Sign In</Link>
             </Button>
             <Button className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg">
               Get Started
@@ -71,8 +72,8 @@ const Navigation = () => {
                 </a>
               ))}
               <div className="flex flex-col space-y-2 px-4 pt-4">
-                <Button variant="outline" className="border-emerald-600 text-emerald-600 hover:bg-emerald-50">
-                  Sign In
+                <Button asChild variant="outline" className="border-emerald-600 text-emerald-600 hover:bg-emerald-50">
+                  <Link to="/signin">Sign In</Link>
                 </Button>
                 <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
                   Get Started
